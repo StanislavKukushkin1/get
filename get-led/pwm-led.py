@@ -3,7 +3,10 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 led = 26
+led_bug = 12
+GPIO.setup(led_bug, GPIO.OUT)
 GPIO.setup(led, GPIO.OUT)
+GPIO.output(led_bug, 0)
 pwm = GPIO.PWM(led,200)
 duty = 0.0
 pwm.start(duty)
