@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
-pins = [16,20,21,25,26,17,27,22]
+pins = [16,20,21,25,26,17,27,22] #safasf
 GPIO.setup(pins, GPIO.OUT)
 dynamic_range = 3.17
 def voltage_to_number(voltage): #вольты в число (от 0 до 255)
