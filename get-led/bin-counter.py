@@ -24,8 +24,10 @@ GPIO.setup(down, GPIO.IN)
 while True:
     if GPIO.input(up):
         num = num + 1
+        print(num, dec2bin(num))
     elif GPIO.input(down):
         num = num - 1
+        print(num, dec2bin(num))
 
     dec = dec2bin(num)
     for i in range(8):
