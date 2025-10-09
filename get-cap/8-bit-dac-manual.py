@@ -4,6 +4,8 @@ GPIO.setmode(GPIO.BCM)
 pins = [16,20,21,25,26,17,27,22] #safasf
 GPIO.setup(pins, GPIO.OUT)
 dynamic_range = 3.17
+
+
 def voltage_to_number(voltage): #вольты в число (от 0 до 255)
     if not (0.0 <= voltage <= dynamic_range):
         print(f"Напряжение выходит за динамический ЦАП (0.00 - {dynamic_range:.2f} ) В")
