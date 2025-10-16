@@ -3,7 +3,7 @@ import signal_generator as sg
 import time
 
 amplitude = 3.2
-signal_frequecy = 10
+signal_frequency = 10
 sampling_frequency = 1000
 
 if __name__ == "__main__":
@@ -12,11 +12,15 @@ if __name__ == "__main__":
 
         while True:
             try:
-                
-                dac.set_voltage(sg(signal_frequecy))
-                sg.wait_for_sampling_period(sampling_frequency)
+                signal_amplitude = sg.get_sin_wave_amplitude(signal_frequency, time.time())
+                voltage = signal_amplitude * amplitude
+                dac.set_voltage(voltage)
+                time.sleep(sg.wait_for_sampling_period(sampling_frequency))
 
             except ValueError:
-                print("Вы ввели не число. Попробуйте еще раз\n")
+                print("Ошибка значения. Попробуйте еще раз\n")
+            except KeyboardInterrupt:
+                print("\nПрограмма завершена")
+                break
     finally:
         dac.deinit()
