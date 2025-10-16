@@ -24,7 +24,7 @@ class PWM_DAC:
             return 0
         duty_cycle = (voltage/self.dynamic_range) * 100
         self.pwm.ChangeDutyCycle(duty_cycle)
-        # print(f" Заполнение: {duty_cycle}")
+        print(f" Заполнение: {duty_cycle}")
         return duty_cycle
 
 if __name__ == "__main__":
