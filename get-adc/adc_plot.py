@@ -22,7 +22,7 @@ def plot_sampling_period_hist(time):
         sampling_periods.append(period)
 
     plt.figure(figsize=(10,6))
-    plt.hist(sampling_periods,)
+    plt.hist(sampling_periods)
 
     plt.title("Распределение периодов дискретиsзации измерений по времени на одно измерение")
     plt.ylabel('Количество измерений')
@@ -42,7 +42,7 @@ try:
 
     while (time.time()-start_time) < duration:
 
-        voltage = adc.get_sc_voltage()
+        voltage = adc.get_sar_voltage()
         voltage_values.append(voltage)
 
         current_time = time.time() - start_time
