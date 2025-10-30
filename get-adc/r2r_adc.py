@@ -15,7 +15,7 @@ class R2R_ADC:
         GPIO.setup(self.comp_gpio,GPIO.IN)
 
     def deinit(self):
-        GPIO.output(self.gpio_bits, 0)
+        GPIO.output(self.bits_gpio, 0)
         GPIO.cleanup()
 
     def number_to_dac(self,number):
@@ -33,22 +33,42 @@ class R2R_ADC:
 
             if GPIO.input(self.comp_gpio) == 1:
                 return number
-        return 255
+        return 255.0
+
 
     def get_sc_voltage(self):
         digital_value = self.sequential_counting_adc()
         voltage = (digital_value/255.0)*self.dynamic_range
         return voltage
 
+    
     def cleanup(self):
         GPIO.cleanup()
 
 
+    def successive_approximation_adc(self):
+        result = 0
+        for bit in range(7,-1,-1):
+            test_value = result | (1<<bit)
+            self.number_to_dac(test_value)
+            time.sleep(self.compare_time)
+
+            if GPIO.input(self.comp_gpio) == 0:
+                result = test_value
+        return result
+
+
+    def get_sar_voltage(self):
+        digital_value = self.successive_approximation_adc()
+        voltage = (digital_value/255.0)*self.dynamic_range
+        return voltage
+
+
 if __name__ == "__main__":
     try:
-        adc = R2R_ADC(dynamic_range = 3.3)
+        adc = R2R_ADC(dynamic_range = 3.29)
         while True:
-            voltage = adc.get_sc_voltage()
+            voltage = adc.get_sar_voltage()
             print(f"Напряжение: {voltage:.2f} В")
             time.sleep(1)
     finally:
