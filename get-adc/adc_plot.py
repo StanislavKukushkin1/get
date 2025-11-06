@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from r2r_adc import R2R_ADC 
+from mcp3021_driver import MCP3021
 import time
 
 def plot_voltage_vs_time(time, voltage, max_voltage):
@@ -37,14 +38,14 @@ def plot_sampling_period_hist(time):
     time.insert(0,0)
     dTime = [time[i+1]-time[i] for i in range(len(time)-1)]
     plt.figure(figsize=(10,6))
-    plt.hist(dTime,bins='auto',edgecolor = 'black')
+    plt.hist(dTime,bins='auto')
     plt.grid(True)
     plt.show()
 
 adc = R2R_ADC(3.30)
 voltage_values = []
 time_values = []
-duration = 3.0
+duration = 10.0
 
 try:
     start_time = time.time()

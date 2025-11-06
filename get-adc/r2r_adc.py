@@ -66,7 +66,7 @@ class R2R_ADC:
 
 if __name__ == "__main__":
     try:
-        adc = R2R_ADC(dynamic_range = 3.29)
+        adc = R2R_ADC(dynamic_range = 3.30)
         while True:
             voltage = adc.get_sar_voltage()
             print(f"Напряжение: {voltage:.2f} В")
