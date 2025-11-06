@@ -51,13 +51,12 @@ if __name__ == "__main__":
     photo_voltages = []
     thermo_voltages = []
     time_values = []
-    duration = 30
+    duration = 10
     
     try:
         mcp_photo = MCP3021(dynamic_range=3.3, verbose=False)
         mcp_thermo = MCP3021(dynamic_range=3.3, verbose=False)
 
-        print(f"Измерение продлится {duration} секунд")
         
         start_time = time.time()
         
