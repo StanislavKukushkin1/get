@@ -27,43 +27,59 @@ class MCP3021:
     def cleanup(self):
         self.deinit()
 
-def plot_voltage_vs_time(time_values, voltage_values):
-    plt.figure(figsize=(12, 6))
-    plt.plot(time_values, voltage_values, 'b-', linewidth=1)
-    plt.title('Зависимость напряжения на фоторезисторе от времени')
+def plot_sensors_vs_time(time_values, photo_voltages, thermo_voltages):
+    plt.figure(figsize=(12, 8))
+    
+    plt.subplot(2, 1, 1)
+    plt.plot(time_values, photo_voltages, 'b-', linewidth=1)
+    plt.title('Напряжение на фоторезисторе')
     plt.xlabel('Время, с')
     plt.ylabel('Напряжение, В')
     plt.grid(True, alpha=0.3)
+    
+    plt.subplot(2, 1, 2)
+    plt.plot(time_values, thermo_voltages, 'r-', linewidth=1)
+    plt.title('Напряжение на терморезисторе')
+    plt.xlabel('Время, с')
+    plt.ylabel('Напряжение, В')
+    plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
-    voltage_values = []
+    photo_voltages = []
+    thermo_voltages = []
     time_values = []
     duration = 30
     
     try:
-        mcp = MCP3021(dynamic_range=3.3, verbose=False)
+        mcp_photo = MCP3021(dynamic_range=3.3, verbose=False)
+        mcp_thermo = MCP3021(dynamic_range=3.3, verbose=False)
+
+        print(f"Измерение продлится {duration} секунд")
+        
         start_time = time.time()
         
         while (time.time() - start_time) < duration:
-            voltage = mcp.get_voltage()
             current_time = time.time() - start_time
             
-            voltage_values.append(voltage)
+            photo_voltage = mcp_photo.get_voltage()
+            thermo_voltage = mcp_thermo.get_voltage()
+            
+            photo_voltages.append(photo_voltage)
+            thermo_voltages.append(thermo_voltage)
             time_values.append(current_time)
             
-            print(f"Время: {current_time:.1f} с, Напряжение: {voltage:.3f} В")
+            print(f"Время: {current_time:.1f} с, Фото: {photo_voltage:.3f} В, Термо: {thermo_voltage:.3f} В")
+            
             time.sleep(0.1)
         
-        plot_voltage_vs_time(time_values, voltage_values)
+        plot_sensors_vs_time(time_values, photo_voltages, thermo_voltages)
         
-        if voltage_values:
-            print(f"Минимальное напряжение: {min(voltage_values):.3f} В")
-            print(f"Максимальное напряжение: {max(voltage_values):.3f} В")
-
     except Exception as e:
         print(f"Ошибка: {e}")
     
     finally:
-        mcp.deinit()
-        print("Измерение завершено")
+        mcp_photo.deinit()
+        mcp_thermo.deinit()
